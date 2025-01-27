@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\ActionGroup;
 
 class ProductSubscriptionResource extends Resource
 {
@@ -168,23 +169,31 @@ class ProductSubscriptionResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('approve')
-                    ->label('Approve')
-                    ->action(function (ProductSubscription $record) {
-                        $record->is_paid = true;
-                        $record->save();
-
-                        Notification::make()
-                            ->title('Order Approved')
-                            ->success()
-                            ->body('The order has been successfully approved.')
-                            ->send();
-                    })
-                    ->color('success')
-                    ->requiresConfirmation()
-                    ->visible(fn(ProductSubscription $record) => !$record->is_paid),
+                ActionGroup::make([
+                    ActionGroup::make([
+                        Tables\Actions\ViewAction::make(),
+                        Tables\Actions\EditAction::make(),
+                    ])
+                        ->dropdown(false),
+                        Tables\Actions\Action::make('approve')
+                        ->label('Approve')
+                        ->action(function (ProductSubscription $record) {
+                            $record->is_paid = true;
+                            $record->save();
+    
+                            Notification::make()
+                                ->title('Order Approved')
+                                ->success()
+                                ->body('The order has been successfully approved.')
+                                ->send();
+                        })
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->visible(fn(ProductSubscription $record) => !$record->is_paid),
+                        Tables\Actions\DeleteAction::make()
+                        ->visible(fn (ProductSubscription $record) => $record->is_paid),
+                ])
+                    ->icon('heroicon-m-bars-3')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -102,7 +102,7 @@
                             <hr class="border-patungan-border">
                             <div class="flex items-center gap-2">
                                 <img src="{{asset('assets/images/icons/verify-green.svg')}}" class="w-[18px] flex shrink-0" alt="icon">
-                                <p class="font-medium text-lg leading-[22px] text-patungan-grey">Money back guarantee</p>
+                                <p class="font-medium text-lg leading-[22px] text-patungan-grey">{{ $itemNewProduct->tagline }}</p>
                             </div>
                         </div>
                         <a href="{{ route('front.details', $itemNewProduct->slug) }}" class="flex items-center rounded-full h-[60px] px-9 w-full gap-[6px] bg-patungan-orange justify-center">
