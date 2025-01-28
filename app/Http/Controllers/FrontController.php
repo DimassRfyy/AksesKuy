@@ -23,6 +23,9 @@ class FrontController extends Controller
 
     public function details(Product $product)
     {
+        $product->load(['keypoints', 'howItWorks', 'testimonials' => function ($query) {
+            $query->where('is_publish', true)->take(5)->latest();
+        }]);
         $ppn = 0.12;
         $price = $product->price_per_person;
         $totalPpn = $price * $ppn;

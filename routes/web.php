@@ -11,6 +11,8 @@ Route::get('/details/{product:slug}', [FrontController::class, 'details'])->name
 Route::get('/check-booking', [BookingController::class, 'checkBooking'])->name('front.check_booking');
 Route::post('/check-booking/details', [BookingController::class, 'checkBookingDetails'])->name('front.check_booking_details');
 
+Route::post('/create-testimonial', [BookingController::class, 'createTestimonial'])->name('front.create_testimonial');
+
 Route::get('/booking/payment', [BookingController::class, 'payment'])->name('front.payment');
 Route::post('/booking/payment', [BookingController::class, 'paymentStore'])->name('front.payment_store');
 

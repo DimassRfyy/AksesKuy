@@ -22,6 +22,7 @@ class SubscriptionGroupResource extends Resource
     protected static ?string $model = SubscriptionGroup::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationGroup = 'Product';
 
     public static function form(Form $form): Form
     {
@@ -94,7 +95,7 @@ class SubscriptionGroupResource extends Resource
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger'),
-            ])
+            ])->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])

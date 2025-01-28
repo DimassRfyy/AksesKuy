@@ -161,7 +161,7 @@ class ProductSubscriptionResource extends Resource
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->label('Terverifikasi'),
-            ])
+            ])->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('product_id')
                     ->label('Product')

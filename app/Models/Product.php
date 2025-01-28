@@ -50,4 +50,9 @@ class Product extends Model
     {
         return $this->hasMany(HowItWorks::class);
     }
+
+    public function testimonials(): HasMany
+    {
+        return $this->hasMany(ProductTestimonial::class);
+    }
 }

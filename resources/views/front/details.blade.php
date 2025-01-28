@@ -108,12 +108,34 @@
                                     the required number of people is not met within the specified time.</p>
                             </div>
                         </div>
-                        <div id="Reviews-Tab" class="tab-content flex flex-col gap-5 hidden">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio laudantium officiis vitae
-                            veritatis dolorem atque in ipsum eius doloribus nulla illo est tempora quos, nobis ea quis
-                            consectetur incidunt maxime. Voluptatibus quod a rerum aut dolorem, illo ipsam provident dolore
-                            nemo laudantium fugiat, suscipit accusantium, et fugit natus eligendi corrupti?
+                        <div id="Reviews-Tab" class="tab-content flex flex-col hidden">
+                            <h3 class="font-bold text-2xl mb-4">Customer Testimonials</h3>
+                            @foreach ($product->testimonials as $testimonial)
+                            <div class="card flex flex-col w-full max-w-md rounded-3xl p-6 gap-2 bg-gray-100 mb-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden shrink-0">
+                                        <img src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : asset('assets/images/photos/photo-2.png') }}" class="w-full h-full object-cover" alt="User">
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-lg leading-[22px] text-gray-800">{{ $testimonial->name }}</p>
+                                        <p class="text-sm text-gray-500">{{ $testimonial->created_at->format('d M Y') }}</p>
+                                    </div>
+                                </div>
+                                <hr class="border-gray-300">
+                                <div class="flex flex-col gap-4">
+                                    <p class="text-gray-800 leading-[28px]">"{{ $testimonial->message }}"</p>
+                                    <div class="flex items-center gap-[2px]">
+                                        @for ($i = 0; $i < 5; $i++)
+                                        <img src="{{ asset('assets/images/icons/Star.svg') }}" class="w-6 flex-shrink-0" alt="star" style="{{ $i < $testimonial->rating ? '' : 'opacity: 0.5;' }}">
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
+                        
+                        
+                        
                     </div>
                 </div>
             </div>

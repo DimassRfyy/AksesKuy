@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\StoreCheckBookingRequest;
 use App\Http\Requests\StorePaymentRequest;
+use App\Http\Requests\StoreTestimonialRequest;
 use App\Models\Product;
 use App\Models\ProductSubscription;
 use App\Services\BookingService;
@@ -80,5 +81,13 @@ class BookingController extends Controller
         }
 
         return redirect()->route('front.check_booking')->withErrors(['error' => 'Transaction not found']);
+    }
+
+    public function createTestimonial(StoreTestimonialRequest $request)
+    {
+        $validated = $request->validated();
+        $this->bookingService->createTestimonial($validated);
+
+        return redirect()->route('front.index')->with('success', 'Testimonial created successfully');
     }
 }

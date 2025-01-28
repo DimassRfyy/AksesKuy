@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\GroupParticipant;
 use App\Models\Product;
 use App\Models\ProductSubscription;
+use App\Models\ProductTestimonial;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -95,6 +96,7 @@ class BookingService
     {
         $bookingDetails = ProductSubscription::with(['product'])
             ->where('booking_trx_id', $validatedData['booking_trx_id'])
+            ->where('phone', $validatedData['phone'])
             ->first();
 
         if (!$bookingDetails) {
@@ -118,12 +120,31 @@ class BookingService
         $productCapacity = $bookingDetails->product->capacity ?? 0;
         $remainingSlots = $productCapacity - $totalParticipants;
 
+        $testimonialExists = ProductTestimonial::where('customer_booking_trx_id', $bookingDetails->booking_trx_id)->exists();
+
         return [
             'bookingDetails' => $bookingDetails,
             'subscriptionGroup' => $subscriptionGroup,
             'productCapacity' => $productCapacity,
             'totalParticipants' => $totalParticipants,
             'remainingSlots' => $remainingSlots,
+            'testimonialExists' => $testimonialExists,
         ];
+    }
+
+    public function createTestimonial(array $validated)
+    {
+        $validated['is_publish'] = false;
+        if (isset($validated['photo'])) {
+            $photoPath = $validated['photo']->store('testimonials', 'public');
+            $validated['photo'] = $photoPath; // e.g., testimonials/testimonial1.png
+        } else {
+            $validated['photo'] = 'assets/images/photos/photo-3.png';
+        }
+        return DB::transaction(function () use ($validated) {
+            $testimonial = ProductTestimonial::create($validated);
+
+            return $testimonial;
+        });
     }
 }

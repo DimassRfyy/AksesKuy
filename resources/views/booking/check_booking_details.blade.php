@@ -49,65 +49,95 @@
                     <div id="Tab-Contents" class="flex">
                         <div id="Broadcast-Message-Tab" class="tab-content flex flex-col w-full gap-9">
                             <div id="Delivery" class="flex flex-col rounded-[32px] p-8 gap-8 bg-white overflow-hidden">
-                                <div
-                                    class="flex items-center justify-between rounded-3xl border border-patungan-border p-6 gap-6">
+                                <div class="flex items-center justify-between rounded-3xl border border-patungan-border p-6 gap-6">
                                     <div class="flex items-center gap-4">
                                         <div class="flex w-[62px] h-[62px] shrink-0 rounded-xl overflow-hidden">
-                                            <img src="{{ Storage::url($bookingDetails->product->photo) }}"
-                                                class="w-full h-full object-contain" alt="logo">
+                                            <img src="{{ Storage::url($bookingDetails->product->photo) }}" class="w-full h-full object-contain" alt="logo">
                                         </div>
                                         <div>
-                                            <p class="font-bold text-xl leading-[25px]">{{ $bookingDetails->product->name }}
-                                            </p>
+                                            <p class="font-bold text-xl leading-[25px]">{{ $bookingDetails->product->name }}</p>
                                             <p class="text-patungan-grey">
-                                                <span class="font-semibold text-xl leading-[25px]">Rp
-                                                    {{ number_format($bookingDetails->product->price_per_person, 0, ',', '.') }}</span>
+                                                <span class="font-semibold text-xl leading-[25px]">Rp {{ number_format($bookingDetails->product->price_per_person, 0, ',', '.') }}</span>
                                                 <span class="font-bold leading-5">/person</span>
                                             </p>
                                         </div>
                                     </div>
                                     <div class="flex items-center rounded-lg p-2 gap-1 bg-patungan-red/10">
-                                        <img src="{{ asset('assets/images/icons/clock-red.svg') }}"
-                                            class="w-6 flex shrink-0" alt="icon">
+                                        <img src="{{ asset('assets/images/icons/clock-red.svg') }}" class="w-6 flex shrink-0" alt="icon">
                                         <p class="font-bold leading-5 text-patungan-red">1 month</p>
                                     </div>
                                 </div>
-                                <div class="flex flex-col gap-6">
+                                <div class="flex flex-col gap-8">
                                     <div class="flex items-center justify-between">
                                         <h2 class="font-bold text-xl leading-[25px]">Broadcast Massage</h2>
                                         @if ($remainingSlots == 0)
-                                            <p id="Badge"
-                                                class="w-fit p-[12px_24px] rounded-full bg-[#3D7452] font-bold text-lg leading-[22px] text-white">
-                                                Delivery</p>
+                                            <p id="Badge" class="w-fit p-[12px_24px] rounded-full bg-[#3D7452] font-bold text-lg leading-[22px] text-white">Delivery</p>
                                         @else
-                                            <p id="Badge"
-                                                class="w-fit p-[12px_24px] rounded-full bg-[#007B9D] font-bold text-lg leading-[22px] text-white">
-                                                Success</p>
+                                            <p id="Badge" class="w-fit p-[12px_24px] rounded-full bg-[#007B9D] font-bold text-lg leading-[22px] text-white">Success</p>
                                         @endif
                                     </div>
                                     @foreach ($subscriptionGroup->groupMessages as $message)
                                         <div class="message-card flex gap-4">
                                             <div class="flex w-16 h-16 rounded-full shrink-0 overflow-hidden">
-                                                <img src="{{ asset('assets/images/icons/Profile-logo.svg') }}"
-                                                    class="w-full h-full object-cover" alt="profile">
+                                                <img src="{{ asset('assets/images/icons/Profile-logo.svg') }}" class="w-full h-full object-cover" alt="profile">
                                             </div>
-                                            <div
-                                                class="flex flex-col flex-1 rounded-3xl rounded-tl-[4px] p-6 gap-6 bg-patungan-bg-grey">
+                                            <div class="flex flex-col flex-1 rounded-3xl rounded-tl-[4px] p-6 gap-6 bg-patungan-bg-grey">
                                                 <div class="message-text">
                                                     <p class="font-semibold text-lg leading-8">
                                                         {{ $message->message }}
                                                     </p>
                                                 </div>
-
-                                                <span
-                                                    class="time font-bold leading-5 text-patungan-grey">{{ $message->created_at->format('d M Y, H:s') }}
-                                                    WIB</span>
+                                                <span class="time font-bold leading-5 text-patungan-grey">{{ $message->created_at->format('d M Y, H:s') }} WIB</span>
                                             </div>
                                         </div>
                                     @endforeach
+                                    @if ($totalParticipants >= $productCapacity)
+                                        @if (!$testimonialExists)
+                                        <form action="{{ route('front.create_testimonial') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $bookingDetails->product_id }}">
+                                            <input type="hidden" name="name" value="{{ $bookingDetails->name }}">
+                                            <input type="hidden" name="customer_booking_trx_id" value="{{ $bookingDetails->booking_trx_id }}">
+                                        
+                                            <div class="flex flex-col gap-4">
+                                                <label for="photo" class="font-bold text-lg">Upload Your Photo:</label>
+                                                <div id="photo-preview" class="w-16 h-16 rounded-full overflow-hidden border border-gray-300 mx-auto hidden">
+                                                    <img id="preview-image" src="#" alt="Preview" class="w-full h-full object-cover">
+                                                </div>
+                                                <div class="flex items-center gap-4">
+                                                    <label for="photo" class="cursor-pointer bg-gray-200 text-gray-700 py-2 px-4 rounded-lg border border-gray-300">
+                                                        Choose Photo
+                                                    </label>
+                                                    <span id="file-name" class="text-gray-600"></span>
+                                                </div>
+                                                <input type="file" name="photo" id="photo" class="hidden" accept="image/*" onchange="previewPhoto(event)">
+                                            </div>
+                                        
+                                            <div class="flex flex-col gap-4">
+                                                <label for="rating" class="font-bold text-lg">Please share your impressions here😘</label>
+                                                <select name="rating" id="rating" class="w-full p-4 rounded-lg border border-gray-300">
+                                                    <option value="">Choose a rating</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        
+                                            <div class="flex flex-col gap-4">
+                                                <label for="message" class="font-bold text-lg">Message:</label>
+                                                <textarea name="message" id="message" rows="4" class="w-full p-4 rounded-lg border border-gray-300" placeholder="Write your message here..."></textarea>
+                                            </div>
+                                        
+                                            <button type="submit" class="w-full p-4 bg-patungan-orange text-white font-bold rounded-full transition">Submit</button>
+                                        </form>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         </div>
+                        
                         <div id="Order-Details-Tab" class="tab-content flex flex-col w-full hidden">
                             <div class="flex flex-col rounded-[32px] p-8 gap-8 bg-white overflow-hidden">
                                 <div id="Order-Summary" class="flex flex-col gap-6">
@@ -233,7 +263,7 @@
                                         </div>
                                     </label>
                                 </div>
-                                {{-- <div id="Transfer-Informations" class="flex flex-col gap-5">
+                                <div id="Transfer-Informations" class="flex flex-col gap-5">
                                 <h2 class="font-bold text-xl leading-[25px]">Transfer Informations</h2>
                                 <div class="group flex flex-col w-full rounded-3xl border border-[#F1F1F1] p-6 bg-white">
                                     <label class="flex items-center w-full justify-between h-10 overflow-hidden">
@@ -281,7 +311,7 @@
                                         <input type="text" value="{{$bookingDetails->customer_bank_number}}" readonly class="appearance-none outline-none bg-patungan-bg-grey w-full font-bold text-xl leading-[25px] placeholder:text-patungan-black" pattern="[0-9 ]*" title="Only numbers and spaces are allowed" placeholder="Nomor Rekening Kamu?">
                                     </div>
                                 </label>
-                            </div> --}}
+                            </div>
                                 <div id="Payment-Proof" class="flex flex-col gap-4">
                                     <h2 class="font-bold text-xl leading-[25px]">Payment Proof</h2>
                                     <div
@@ -386,4 +416,29 @@
     <script src="{{ asset('customjs/nav-tab.js') }}"></script>
     <script src="{{ asset('customjs/copy.js') }}"></script>
     <script src="{{ asset('customjs/file-upload.js') }}"></script>
+    <script>
+        function previewPhoto(event) {
+            const fileInput = event.target;
+            const file = fileInput.files[0];
+            const fileNameElement = document.getElementById('file-name');
+            const previewContainer = document.getElementById('photo-preview');
+            const previewImage = document.getElementById('preview-image');
+    
+            if (file) {
+                // Display file name
+                fileNameElement.textContent = file.name;
+    
+                // Create a URL for the selected image and show the preview
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileNameElement.textContent = '';
+                previewContainer.classList.add('hidden');
+            }
+        }
+    </script>
 @endpush
