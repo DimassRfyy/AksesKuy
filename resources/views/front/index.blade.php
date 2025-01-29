@@ -35,8 +35,8 @@
     <section id="Stats" class="w-full flex justify-center bg-patungan-black">
         <div class="flex items-center gap-8 w-full max-w-[1280px] px-16 py-[42px]">
             <div class="flex flex-col w-[222px] gap-[6px] text-center">
-                <p class="font-Grifter font-bold text-[42px] leading-[44px] text-white">2.209+</p>
-                <p class="font-medium text-xl leading-[25px] text-patungan-violet">Total User</p>
+                <p class="font-Grifter font-bold text-[42px] leading-[44px] text-white">{{ $productTestimonials->count() }}+</p>
+                <p class="font-medium text-xl leading-[25px] text-patungan-violet">Total Feedback</p>
             </div>
             <img src="{{asset('assets/images/icons/star-divider-white.svg')}}" class="w-6 flex shrink-0" alt="icon">
             <div class="flex flex-col w-[222px] gap-[6px] text-center">
@@ -45,12 +45,12 @@
             </div>
             <img src="{{asset('assets/images/icons/star-divider-white.svg')}}" class="w-6 flex shrink-0" alt="icon">
             <div class="flex flex-col w-[222px] gap-[6px] text-center">
-                <p class="font-Grifter font-bold text-[42px] leading-[44px] text-white">12</p>
+                <p class="font-Grifter font-bold text-[42px] leading-[44px] text-white">{{ $newProducts->count() }}</p>
                 <p class="font-medium text-xl leading-[25px] text-patungan-violet">Total Services</p>
             </div>
             <img src="{{asset('assets/images/icons/star-divider-white.svg')}}" class="w-6 flex shrink-0" alt="icon">
             <div class="flex flex-col w-[222px] gap-[6px] text-center">
-                <p class="font-Grifter font-bold text-[42px] leading-[44px] text-white">4.920+</p>
+                <p class="font-Grifter font-bold text-[42px] leading-[44px] text-white">{{ $transactionProducts->count() }}+</p>
                 <p class="font-medium text-xl leading-[25px] text-patungan-violet">Total Transactions</p>
             </div>
         </div>

@@ -133,6 +133,8 @@ class ProductSubscriptionResource extends Resource
 
                             Forms\Components\FileUpload::make('proof')
                                 ->image()
+                                ->disk('public')
+                                ->directory('proofs')
                                 ->required(),
                         ]),
                 ])
