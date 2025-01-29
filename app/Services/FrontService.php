@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\FAQAccordion;
 use App\Models\Product;
 use App\Models\ProductSubscription;
 use App\Models\ProductTestimonial;
@@ -9,12 +10,13 @@ use App\Models\ProductTestimonial;
 class FrontService
 {
     public function getFrontPageData()
-{
-    $popularProducts = Product::where('is_popular', 1)->latest()->get();
-    $newProducts = Product::latest()->get();
-    $transactionProducts = ProductSubscription::all();
-    $productTestimonials = ProductTestimonial::where('is_publish', true)->latest()->take(20)->with('product')->get();
+    {
+        $popularProducts = Product::where('is_popular', 1)->latest()->get();
+        $newProducts = Product::latest()->get();
+        $transactionProducts = ProductSubscription::all();
+        $productTestimonials = ProductTestimonial::where('is_publish', true)->latest()->take(20)->with('product')->get();
+        $FAQs = FAQAccordion::all();
 
-    return compact('popularProducts', 'newProducts', 'productTestimonials','transactionProducts');
-}
+        return compact('popularProducts', 'newProducts', 'productTestimonials','transactionProducts','FAQs');
+    }
 }

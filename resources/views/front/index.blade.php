@@ -329,88 +329,45 @@
                 <h2 class="font-bold text-xl leading-[25px] text-patungan-red">Frequently Asked Questions</h2>
                 <p class="font-Grifter font-bold text-4xl leading-[37px]">Common Questions About Our Service</p>
             </div>
-            <div class="flex gap-6">
+            <div class="grid grid-cols-2 gap-6">
+                @php
+                    $chunks = $FAQs->chunk(ceil($FAQs->count() / 2));
+                    $leftIndex = 1;
+                    $rightIndex = $chunks[0]->count() + 1;
+                @endphp
                 <div id="Left-Cards" class="flex flex-col gap-6">
-                    <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
-                        <p class="font-Grifter font-bold text-2xl leading-[25px]">1</p>
-                        <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
-                            <label class="flex items-center gap-4 justify-between min-h-[38px]">
-                                <input type="checkbox" class="hidden" checked>
-                                <h3 class="font-Grifter text-lg leading-[25px]">When does the subscription period at Patungan become active?</h3>
-                                <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
-                            </label>
-                            <div class="accordion-content mt-4">
-                                <p class="font-semibold leading-[25px]">Your subscription becomes active immediately after the payment is successfully processed. You will receive a confirmation email with the details</p>
+                    @foreach ($chunks[0] as $FAQ)
+                        <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
+                            <p class="font-Grifter font-bold text-2xl leading-[25px]">{{ $leftIndex++ }}</p>
+                            <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
+                                <label class="flex items-center gap-4 justify-between min-h-[38px]">
+                                    <input type="checkbox" class="hidden" checked>
+                                    <h3 class="font-Grifter text-lg leading-[25px]">{{ $FAQ->question }}</h3>
+                                    <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
+                                </label>
+                                <div class="accordion-content mt-4">
+                                    <p class="font-semibold leading-[25px] break-words">{{ $FAQ->answer }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
-                        <p class="font-Grifter font-bold text-2xl leading-[25px]">3</p>
-                        <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
-                            <label class="flex items-center gap-4 justify-between min-h-[38px]">
-                                <input type="checkbox" class="hidden" checked>
-                                <h3 class="font-Grifter text-lg leading-[25px]">What payment methods are available on Patungan?</h3>
-                                <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
-                            </label>
-                            <div class="accordion-content mt-4">
-                                <p class="font-semibold leading-[25px]">Your subscription becomes active immediately after the payment is successfully processed. You will receive a confirmation email with the details</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
-                        <p class="font-Grifter font-bold text-2xl leading-[25px]">5</p>
-                        <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
-                            <label class="flex items-center gap-4 justify-between min-h-[38px]">
-                                <input type="checkbox" class="hidden" checked>
-                                <h3 class="font-Grifter text-lg leading-[25px]">What if there are difficulties during the payment process?</h3>
-                                <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
-                            </label>
-                            <div class="accordion-content mt-4">
-                                <p class="font-semibold leading-[25px]">Your subscription becomes active immediately after the payment is successfully processed. You will receive a confirmation email with the details</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div id="Right-Cards" class="flex flex-col gap-6">
-                    <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
-                        <p class="font-Grifter font-bold text-2xl leading-[25px]">2</p>
-                        <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
-                            <label class="flex items-center gap-4 justify-between min-h-[38px]">
-                                <input type="checkbox" class="hidden" checked>
-                                <h3 class="font-Grifter text-lg leading-[25px]">How do I proceed with renewing my subscription on Patungan?</h3>
-                                <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
-                            </label>
-                            <div class="accordion-content mt-4">
-                                <p class="font-semibold leading-[25px]">Your subscription becomes active immediately after the payment is successfully processed. You will receive a confirmation email with the details</p>
+                    @foreach ($chunks[1] as $FAQ)
+                        <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
+                            <p class="font-Grifter font-bold text-2xl leading-[25px]">{{ $rightIndex++ }}</p>
+                            <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
+                                <label class="flex items-center gap-4 justify-between min-h-[38px]">
+                                    <input type="checkbox" class="hidden" checked>
+                                    <h3 class="font-Grifter text-lg leading-[25px]">{{ $FAQ->question }}</h3>
+                                    <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
+                                </label>
+                                <div class="accordion-content mt-4">
+                                    <p class="font-semibold leading-[25px] break-words">{{ $FAQ->answer }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
-                        <p class="font-Grifter font-bold text-2xl leading-[25px]">4</p>
-                        <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
-                            <label class="flex items-center gap-4 justify-between min-h-[38px]">
-                                <input type="checkbox" class="hidden" checked>
-                                <h3 class="font-Grifter text-lg leading-[25px]">What should be done if there are issues with the subscription account?</h3>
-                                <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
-                            </label>
-                            <div class="accordion-content mt-4">
-                                <p class="font-semibold leading-[25px]">Your subscription becomes active immediately after the payment is successfully processed. You will receive a confirmation email with the details</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="faq-card flex flex-col rounded-3xl p-8 gap-4 bg-white">
-                        <p class="font-Grifter font-bold text-2xl leading-[25px]">6</p>
-                        <div class="accordion group flex flex-col has-[:checked]:!h-11 overflow-hidden transition-all duration-300">
-                            <label class="flex items-center gap-4 justify-between min-h-[38px]">
-                                <input type="checkbox" class="hidden" checked>
-                                <h3 class="font-Grifter text-lg leading-[25px]">How do I proceed with renewing my subscription on Patungan?</h3>
-                                <img src="{{asset('assets/images/icons/arrow-head-down-black.svg')}}" class="w-6 flex shrink-0 group-has-[:checked]:-rotate-180 transition-all duration-300" alt="icon">
-                            </label>
-                            <div class="accordion-content mt-4">
-                                <p class="font-semibold leading-[25px]">Your subscription becomes active immediately after the payment is successfully processed. You will receive a confirmation email with the details</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -435,7 +392,7 @@
                             <a href="#How-It-Works" class="hover:text-patungan-black transition-all duration-300">Cara Pesan</a>
                         </li>
                         <li class="font-medium leading-5 text-patungan-grey">
-                            <a href="#Happy-Customers" class="hover:text-patungan-black transition-all duration-300">Testimoni</a>
+                            <a href="#Happy-Customer" class="hover:text-patungan-black transition-all duration-300">Testimoni</a>
                         </li>
                         <li class="font-medium leading-5 text-patungan-grey">
                             <a href="#FAQ" class="hover:text-patungan-black transition-all duration-300">FAQ</a>
@@ -456,15 +413,15 @@
                 </div>
             </div>
             <div class="flex items-center">
-                <p class="w-full font-medium leading-5 text-patungan-grey">©2024 AksesKuy. All Rights Reserved</p>
+                <p class="w-full font-medium leading-5 text-patungan-grey">©2025 AksesKuy. All Rights Reserved</p>
                 <div class="flex items-center gap-4 mx-auto shrink-0">
-                    <a href="#">
+                    <a href="https://instagram.com/dimass_rfyy" target="_blank">
                         <img src="{{asset('assets/images/icons/instagram.svg')}}" class="w-6 flex shrink-0" alt="icon">
                     </a>
-                    <a href="#">
+                    <a href="https://wa.me/6282130869378" target="_blank">
                         <img src="{{asset('assets/images/icons/whatsapp.svg')}}" class="w-6 flex shrink-0" alt="icon">
                     </a>
-                    <a href="#">
+                    <a href="https://www.facebook.com/dimas.rafi.522066?locale=id_ID">
                         <img src="{{asset('assets/images/icons/facebook.svg')}}" class="w-6 flex shrink-0" alt="icon">
                     </a>
                 </div>
